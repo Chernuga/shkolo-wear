@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#0b1220">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shkolo · телефон"
+        android:textColor="#e6edf7"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Влезте тук веднъж. Часовникът само показва данните."
+        android:textColor="#8ea0bb"
+        android:textSize="13sp"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="○ Не сте влезли"
+        android:textColor="#7cc4ff"
+        android:textSize="15sp"
+        android:layout_marginBottom="20dp" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Потребителско име"
+        android:inputType="textEmailAddress"
+        android:autofillHints="username"
+        android:textColor="#e6edf7"
+        android:textColorHint="#64748b"
+        android:backgroundTint="#2a3a56"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Парола"
+        android:inputType="textPassword"
+        android:autofillHints="password"
+        android:textColor="#e6edf7"
+        android:textColorHint="#64748b"
+        android:backgroundTint="#2a3a56"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ВХОД"
+        android:backgroundTint="#2563eb"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Изход"
+        android:visibility="gone" />
+
+</LinearLayout>

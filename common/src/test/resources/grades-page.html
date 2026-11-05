@@ -1,0 +1,1301 @@
+<div class="portlet light  gradesBody ">
+        <div class="showFiltersContainer hidden-print">
+                            <button class="btn btn-mobile yellow print-diary-table"><i class="far fa-print"></i> Принтирай</button>
+                        <button type="button" class="btn btn-mobile default pull-right showFiltersBtn"><i class="fas fa-filter"></i> Филтри</button>
+        <div class="filtersContainer clearfix" style=display:none; >
+        <div class="col-sm-4 form-group filterElement">
+        <select class="form-control filterType" id="gradesFilterType" >
+            <option value="0" class="clearFilterOption">Изберете (тип оценка)</option>
+                        <option value="4" >Устно изпитване</option>
+                        <option value="14" >Писмено изпитване</option>
+                        <option value="11" >Практическо изпитване</option>
+                        <option value="7" >Тест</option>
+                        <option value="10" >Активно участие</option>
+                        <option value="9" >Проект</option>
+                        <option value="8" >Самостоятелна работа</option>
+                        <option value="3" >Домашна работа</option>
+                        <option value="2" >Контролна работа</option>
+                        <option value="1" >Класна работа</option>
+                        <option value="12" >Входно равнище</option>
+                        <option value="15" >Междинно равнище</option>
+                        <option value="13" >Изходно равнище</option>
+                        <option value="5" >Срочна</option>
+                        <option value="6" >Годишна</option>
+                        <option value="16" >От друго училище</option>
+                        <option value="17" >От друга паралелка</option>
+                    </select>
+
+        <div class="icheck-inline">
+            <label><input data-checkbox="icheckbox_square-blue" type="checkbox" id="gradesDeletedFilter"
+                          class="icheck filterIncludeDeleted"
+                          > Изтрити оценки</label>
+        </div>
+    </div>
+        <div class="col-sm-6">
+        <div class="row">
+            <div class="col-xs-6 form-group filterElement">
+                <input type="text" size="11" class="fromDate form-control filterDate datepicker" id="gradesFilterFromDate" placeholder="От дата" value='' autocomplete="off"/>
+            </div>
+            <div class="col-xs-6 form-group filterElement">
+                <input type="text" size="11" class="toDate form-control filterDate datepicker" id="gradesFilterToDate" placeholder="До дата" value='' autocomplete="off" />
+            </div>
+            <div class="col-sm-12 form-group filterElement">
+                <div class="input-group">
+                    <div class="icheck-inline">
+                        <label><input data-checkbox="icheckbox_square-blue" type="checkbox" id="gradesPreviousMonthFilter"
+                                   class="icheck previousMonthFilter" > Предходен месец</label>
+                        <label><input data-checkbox="icheckbox_square-blue" type="checkbox" id="gradesCurrentMonthFilter"
+                                      class="icheck currentMonthFilter" > Текущ месец</label>
+                        <label><input data-checkbox="icheckbox_square-blue" type="checkbox" id="gradesCurrentWeekFilter"
+                                      class="icheck currentWeekFilter" > Текуща седмица</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="javascript:" class="pull-right btn btn-mobile btn-danger clearFilter"><i class="fas fa-times"></i> Изчисти</a>
+</div>
+    </div>
+        <div class="row portlet-body">
+        <input type="hidden" value="2" id="termsCount" />
+
+                <div class=" col-sm-12 ">
+                        <div class="text-center visible-print">
+                                            </div>
+            <table class="table table-bordered table-hover table-striped" id="tableGrades">
+            <thead>
+            <tr class="tableHeadersFooters">
+                                    <th rowspan="2" class="thinTableColumn">№</th>
+                                <th rowspan="2"> Предмет </th>
+                                                        <th rowspan="2" class="thinTableColumn solid-left-border emptyForTerm1 emptyExpandColumn  hide ">
+<a href="#" id="showTerm1" title="Покажи първи срок" class="showGradeBtn"><i class="far fa-plus-square"></i><br><span>I срок</span></a>
+</th>
+<th colspan="2" class="solid-left-border term1  clickable_grade_cell">
+<a href="#" id="hideTerm1" title="Скрий първи срок" class="hideGradeBtn"><i class="far fa-minus-square"></i></a>
+<span>Първи срок</span>
+</th>                                                        <th rowspan="2" class="thinTableColumn solid-left-border emptyForTerm2 emptyExpandColumn ">
+<a href="#" id="showTerm2" title="Покажи втори срок" class="showGradeBtn"><i class="far fa-plus-square"></i><br><span>II срок</span></a>
+</th>
+<th colspan="2" class="solid-left-border term2  hide  clickable_grade_cell">
+<a href="#" id="hideTerm2" title="Скрий втори срок" class="hideGradeBtn"><i class="far fa-minus-square"></i></a>
+<span>Втори срок</span>
+</th>                                <th rowspan="2" class="thinTableColumn annualAssessment emptyExpandColumn solid-left-border" style="min-width: 2%;">
+                    <a title="localization.Godishni_otsenki" class="showGradeBtn"><span>Годишна</span></a>
+                </th>
+            </tr>
+            <tr class="tableHeadersFooters">
+                                    <th class="subheading solid-left-border term1 ">Текущи</th>
+                    <th class="subheading thinTableColumn term1 ">Срочна</th>
+                                    <th class="subheading solid-left-border term2  hide ">Текущи</th>
+                    <th class="subheading thinTableColumn term2  hide ">Срочна</th>
+                            </tr>
+            </thead>
+            <tbody>
+                            <tr class="compactTableRow " data-course-id="2600082676">
+                        <td class="numVal">
+                1
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Български език и литература
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="1_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000004834419" >6</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000004834723" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="1_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="1_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="1_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="1_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082763">
+                        <td class="numVal">
+                2
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Английски език
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="55_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small blue grade "
+                id="grade_2600000000005381077" >5</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="55_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="55_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="55_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="55_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082768">
+                        <td class="numVal">
+                3
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Немски език
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="56_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000000895628" >6</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000002938732" >6</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000005972473" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="56_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="56_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="56_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="56_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082686">
+                        <td class="numVal">
+                4
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Математика
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="2_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small blue grade "
+                id="grade_2600000000001776386" >5</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="2_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="2_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="2_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="2_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082670">
+                        <td class="numVal">
+                5
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Информационни технологии
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="27_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000004832193" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="27_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="27_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="27_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="27_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082750">
+                        <td class="numVal">
+                6
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> История и цивилизации
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="9390_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000000216607" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="9390_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="9390_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="9390_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="9390_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082744">
+                        <td class="numVal">
+                7
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> География и икономика
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="8_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small blue grade "
+                id="grade_2600000000004913664" >5</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="8_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="8_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="8_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="8_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082696">
+                        <td class="numVal">
+                8
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Философия
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="4_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small blue grade "
+                id="grade_2600000000002368371" >5</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="4_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="4_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="4_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="4_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082711">
+                        <td class="numVal">
+                9
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Биология и здравно образование
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="20_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000000042015" >6</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000001552753" >6</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000004839048" >6</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000004839349" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="20_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="20_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="20_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="20_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082706">
+                        <td class="numVal">
+                10
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Физика и астрономия
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="17_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000002148189" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="17_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="17_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="17_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="17_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082716">
+                        <td class="numVal">
+                11
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Химия и опазване на околната среда
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="21_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small yellow-lemon grade "
+                id="grade_2600000000000179428" >4</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="21_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="21_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="21_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="21_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082721">
+                        <td class="numVal">
+                12
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Физическо възпитание и спорт
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="34_20"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small blue grade "
+                id="grade_2600000000002705212" >5</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000002708611" >6</button>
+                        <button class="btn small blue grade "
+                id="grade_2600000000003208979" >5</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000004765059" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="34_20"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="34_20"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="34_20"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="34_20"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082731">
+                        <td class="numVal">
+                13
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Икономика (ОбПП)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="23024_21"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000003743698" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="23024_21"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="23024_21"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="23024_21"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="23024_21"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083229">
+                        <td class="numVal">
+                14
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Аналогова схемотехника (ИУЧ - ОтПП)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="11526_25"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000000229829" >6</button>
+                        <button class="btn small green-jungle grade "
+                id="grade_2600000000004435548" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="11526_25"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="11526_25"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="11526_25"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="11526_25"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083231">
+                        <td class="numVal">
+                15
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> УП - Схемотехника (ИУЧ - ОтПП)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="140522_25"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="140522_25"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="140522_25"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="140522_25"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="140522_25"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083234">
+                        <td class="numVal">
+                16
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Производствена практика (ИУЧ - СПП)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="11503_26"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="11503_26"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="11503_26"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="11503_26"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="11503_26"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083238">
+                        <td class="numVal">
+                17
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Компютърни технологии (ИУЧ - РПП)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="72090_27"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                    <button class="btn small green-jungle grade "
+                id="grade_2600000000006221222" >6</button>
+                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="72090_27"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="72090_27"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="72090_27"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="72090_27"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083236">
+                        <td class="numVal">
+                18
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Техническа математика (ИУЧ - РПП)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="126376_27"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="126376_27"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="126376_27"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="126376_27"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="126376_27"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083239">
+                        <td class="numVal">
+                19
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> УП - Компютърни технологии (ИУЧ - РПП)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="72091_27"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="72091_27"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="72091_27"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="72091_27"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="72091_27"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083135">
+                        <td class="numVal">
+                20
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Спортни дейности (…)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="204320_18"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="204320_18"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="204320_18"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="204320_18"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="204320_18"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082789">
+                        <td class="numVal">
+                21
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Безопасност на движението (…)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="83_18"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="83_18"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="83_18"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="83_18"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="83_18"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600082907">
+                        <td class="numVal">
+                22
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Час на класа (…)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="86_18"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="86_18"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="86_18"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="86_18"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="86_18"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600083137">
+                        <td class="numVal">
+                23
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Работа с ученици и родители (ОПЛР/Конс)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="84_46"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="84_46"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="84_46"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="84_46"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="84_46"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+                    <tr class="compactTableRow " data-course-id="2600688332">
+                        <td class="numVal">
+                24
+            </td>
+            <td>
+                                                    <i class="icon-book-open"></i> Гражданско образование 10 клас (…)
+                                        </td>
+                            <td class="emptyForTerm1 solid-left-border numVal  hide "
+                    data-mix_id=""
+                    data-target_id="274820_18"
+                    data-term_id="1">
+                                    </td>
+                
+                <td class="term1 solid-left-border " data-term_id="1">
+                                    </td>
+                
+                <td class="numVal term1 "
+                    data-mix_id=""
+                    data-target_id="274820_18"
+                    data-term_id="1">
+                                    </td>
+                            <td class="emptyForTerm2 solid-left-border numVal "
+                    data-mix_id=""
+                    data-target_id="274820_18"
+                    data-term_id="2">
+                                    </td>
+                
+                <td class="term2 solid-left-border  hide " data-term_id="2">
+                                    </td>
+                
+                <td class="numVal term2  hide "
+                    data-mix_id=""
+                    data-target_id="274820_18"
+                    data-term_id="2">
+                                    </td>
+                        
+            <td class="emptyAnnual annualAssessment solid-left-border"
+                data-annual_grades_for_all_modules=""
+                data-module_has_failing_grade=""
+                data-module_has_failing_grade_name=""
+                data-mix_id=""
+                data-target_id="274820_18"
+                data-is_main_course=""
+                data-term_id="2"
+            >
+                            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan=2 align="center" class="big bold"> Средноаритметично </td>
+                            <td class="emptyForTerm1 solid-left-border vertical-centered  hide ">
+                    <a class="grade huge bold" data-uid="term1avg" data-isavg="1"></a>
+                    </td>
+                <td class="numVal bold term1 solid-left-border vertical-centered ">
+                    5.68
+                </td>
+                <td class="numVal term1 vertical-centered ">
+                    <a class="grade huge bold" data-uid="term1avg" data-isavg="1"></a>
+                    </td>
+                            <td class="emptyForTerm2 solid-left-border vertical-centered ">
+                    <a class="grade huge bold" data-uid="term2avg" data-isavg="1"></a>
+                    </td>
+                <td class="numVal bold term2 solid-left-border vertical-centered  hide ">
+                    
+                </td>
+                <td class="numVal term2 vertical-centered  hide ">
+                    <a class="grade huge bold" data-uid="term2avg" data-isavg="1"></a>
+                    </td>
+                        <td class="numVal annualAssessment solid-left-border vertical-centered"><a class="grade huge bold" data-uid="annualavg" data-isavg="1"> </a>
+    </td>
+        </tr>
+    </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
