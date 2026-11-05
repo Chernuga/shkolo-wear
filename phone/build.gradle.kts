@@ -15,9 +15,23 @@ android {
         versionName = "1.0"
     }
 
+    // Release signing. The keystore is not committed; see keystore/README.md.
+    val ks = rootProject.file("keystore/shkolo-release.jks")
+    signingConfigs {
+        if (ks.exists()) {
+            create("release") {
+                storeFile = ks
+                storePassword = (project.findProperty("shkoloStorePass") ?: "shkolo123") as String
+                keyAlias = "shkolo"
+                keyPassword = (project.findProperty("shkoloKeyPass") ?: "shkolo123") as String
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (ks.exists()) signingConfig = signingConfigs.getByName("release")
         }
     }
 

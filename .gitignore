@@ -14,3 +14,7 @@ Thumbs.db
 *.jks
 *.keystore
 keystore.properties
+
+# Release keystore (keep README only)
+keystore/*.jks
+

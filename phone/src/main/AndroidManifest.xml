@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,13 +25,16 @@
             </intent-filter>
         </activity>
 
-        <!-- Answers requests coming from the watch. -->
+        <!--
+          Answers requests coming from the watch.
+
+          Only MESSAGE_RECEIVED is registered: BIND_LISTENER is deprecated and
+          release lint rejects it. MESSAGE_RECEIVED with the /shkolo/ path
+          prefix is the supported way to receive Wearable messages.
+        -->
         <service
             android:name=".WatchListenerService"
             android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/shkolo/" />
