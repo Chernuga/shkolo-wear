@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -13,6 +14,7 @@ import android.webkit.WebViewClient
 import bg.shkolo.common.Protocol
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.net.HttpURLConnection
@@ -83,17 +85,32 @@ class ShkoloClient(private val context: Context) {
             databaseEnabled = true
             userAgentString = UA
             cacheMode = WebSettings.LOAD_DEFAULT
-            // The fingerprint script must be allowed to run normally.
-            blockNetworkImage = false
+
+            // The fingerprint script needs canvas/audio/WebGL, so JS stays on.
+            // Everything the login does NOT need is switched off: each of these
+            // costs main-thread time in a hidden WebView and made the phone
+            // feel frozen on slower devices.
+            loadsImagesAutomatically = false
+            blockNetworkImage = true
+            setSupportZoom(false)
+            builtInZoomControls = false
+            displayZoomControls = false
+            mediaPlaybackRequiresUserGesture = true
         }
-        wv.webViewClient = WebViewClient()
+
+        // A WebView with no window/layout params can throw when rendering;
+        // keep it detached but sized, and never attach it to the view tree.
+        wv.visibility = View.GONE
         cookieManager.setAcceptThirdPartyCookies(wv, true)
         webView = wv
     }
 
     /**
-     * Runs [script] inside a page we first navigate to (so same-origin XHR and
-     * CSRF behave normally), returning the evaluated value.
+     * Runs [script] once the page at [url] has loaded, returning the value.
+     *
+     * Guards against callbacks from *other* navigations: onPageFinished fires
+     * for redirects and re-navigations too, which previously let a stale page
+     * satisfy the gate before the one we wanted had finished.
      */
     private suspend fun <T> runInPage(
         url: String,
@@ -104,81 +121,124 @@ class ShkoloClient(private val context: Context) {
         val wv = ensureWebView()
         val gate = CompletableDeferred<T?>()
 
+        wv.stopLoading() // abandon anything still in flight
+
         wv.webViewClient = object : WebViewClient() {
+            private var settled = false
+
             override fun onPageFinished(view: WebView, finishedUrl: String) {
+                if (settled) return
+
+                // Only accept the URL we actually asked for (ignoring trailing
+                // slashes and query strings that Shkolo may append).
+                val want = url.trimEnd('/')
+                val got = (finishedUrl ?: "").substringBefore('?').trimEnd('/')
+                if (!got.startsWith(want)) return
+
+                settled = true
                 view.evaluateJavascript(script) { raw ->
                     val value = raw
                         ?.let { runCatching { org.json.JSONTokener(it).nextValue() as? String }.getOrNull() }
                         ?: raw
-                    gate.complete(transform(value ?: ""))
+                    if (!gate.isCompleted) gate.complete(transform(value ?: ""))
                 }
             }
 
-            override fun shouldInterceptRequest(
+            override fun onReceivedError(
                 view: WebView,
                 request: WebResourceRequest,
-            ): WebResourceResponse? = null
+                error: android.webkit.WebResourceError,
+            ) {
+                // Only fail for the main frame, not stray subresources.
+                if (request.isForMainFrame && !gate.isCompleted) gate.complete(null)
+            }
         }
 
         wv.loadUrl(url)
         withTimeoutOrNull(timeoutMs) { gate.await() }
     }
 
-    /** Reads the fingerprint values fp.js put into the hidden inputs. */
-    private val READ_FINGERPRINT = """
-        (function(){
-          var f = {};
-          ['visitor_id','user_agent','timezone','webgl_vendor','fonts','canvas_hash','audio_hash','browser_hash']
-            .forEach(function(k){
-              var el = document.querySelector('input[name="fingerprint[' + k + ']"]');
-              f[k] = el ? el.value : '';
-            });
-          f._csrf = (document.querySelector('meta[name=csrf-token]')||{}).content || '';
-          return JSON.stringify(f);
-        })()
-    """.trimIndent()
-
-    // ---------------------------------------------------------------- login
-
     /**
-     * Logs in with the given credentials using the WebView, exactly like a
-     * person would: load the form, let fp.js fill it, submit, wait for /dashboard.
+     * Logs in with one page load.
+     *
+     * The script waits for fp.js to populate the hidden fingerprint inputs
+     * (it runs asynchronously after load), then fills and submits the form.
+     * We deliberately do NOT wait for "networkidle": Shkolo's analytics keep
+     * the connection busy forever, which is what made login appear to freeze.
      */
     suspend fun login(username: String, password: String): Boolean {
-        val ok = runInPage(
-            url = "$BASE/",
-            timeoutMs = 90_000,
-            script = READ_FINGERPRINT,
-        ) { fpJson ->
-            // This runs after the login page loaded; we still need to submit.
-            fpJson
+        val user = jsString(username)
+        val pass = jsString(password)
+
+        val script = """
+            (function(){
+              try {
+                var u = document.querySelector('input[name=login]');
+                var p = document.querySelector('input[name=password]');
+                if (!u || !p) return 'noform';
+
+                var fp = document.querySelector('input[name="fingerprint[visitor_id]"]');
+                if (!fp || !fp.value) return 'nofp';   // fp.js not ready yet
+
+                u.value = $user;
+                p.value = $pass;
+                var form = u.closest('form');
+                if (!form) return 'noform';
+
+                // Submit on the next tick so the caller can return first.
+                setTimeout(function(){ form.submit(); }, 50);
+                return 'submitted';
+              } catch (e) { return 'error:' + e.message; }
+            })()
+        """.trimIndent()
+
+        // fp.js is async and can be slow on first run; retry a few times
+        // instead of failing the whole login on a cold cache.
+        var submitted: String? = null
+        for (attempt in 1..3) {
+            if (attempt > 1) {
+                Log.d(TAG, "retrying login submit (attempt $attempt), last=$submitted")
+                delay(1_500)
+                // Reload so the form and fp.js run again.
+                runInPage(url = "$BASE/", timeoutMs = 30_000, script = "1") { it }
+            }
+
+            submitted = runInPage(
+                url = "$BASE/",
+                timeoutMs = 60_000,
+                script = script,
+            ) { it }
+
+            if (submitted == "submitted") break
+            if (submitted != null && submitted != "nofp") break // noform/error: stop early
         }
 
-        val fingerprint = ok ?: return finishLogin()
+        Log.d(TAG, "login submit -> $submitted")
+        if (submitted != "submitted") return false
 
-        return finishLogin(
-            formScript = """
-                (function(){
-                  var u = document.querySelector('input[name=login]');
-                  var p = document.querySelector('input[name=password]');
-                  if (!u || !p) return 'none';
-                  u.value = ${sqlString(username)};
-                  p.value = ${sqlString(password)};
-                  var btn = document.getElementById('login-submit-btn');
-                  var form = u.closest('form');
-                  if (form) form.submit();
-                  return 'submitted';
-                })()
-            """.trimIndent(),
-        )
+        return waitForSession()
     }
 
-    private suspend fun finishLogin(formScript: String? = null): Boolean {
-        if (formScript != null) {
-            runInPage(url = "$BASE/", script = formScript) { it }
+    /**
+     * Polls until Shkolo's session cookie exists (the reliable success signal),
+     * rather than trusting a navigation that may never "finish".
+     */
+    private suspend fun waitForSession(timeoutMs: Long = 45_000): Boolean {
+        val deadline = System.currentTimeMillis() + timeoutMs
+        while (System.currentTimeMillis() < deadline) {
+            delay(700)
+            if (isLoggedIn) {
+                cookieManager.flush()
+                capturePupilIds()
+                return true
+            }
         }
-        // Wait for Shkolo to land on the dashboard, then capture the ids.
-        val landed = runInPage(
+        return false
+    }
+
+    /** Reads pupil/class ids from whatever page the WebView ended up on. */
+    private suspend fun capturePupilIds() {
+        runInPage(
             url = "$BASE/dashboard",
             timeoutMs = 20_000,
             script = """
@@ -187,22 +247,24 @@ class ShkoloClient(private val context: Context) {
                   var c = document.querySelector('#class_year_id_field');
                   return JSON.stringify({
                     pupil: p ? p.value : null,
-                    cls: c ? c.value : null,
-                    href: location.href
+                    cls: c ? c.value : null
                   });
                 })()
             """.trimIndent(),
         ) {
-            val o = org.json.JSONObject(it)
-            pupilId = o.optString("pupil", "").ifBlank { null }
-            classYearId = o.optString("cls", "").ifBlank { null }
-            o.optString("href", "").contains("/dashboard")
+            runCatching {
+                val o = org.json.JSONObject(it)
+                pupilId = o.optString("pupil", "").ifBlank { null }
+                classYearId = o.optString("cls", "").ifBlank { null }
+            }
+            true
         }
-
-        cookieManager.flush()
-        csrf = null
-        return landed == true && isLoggedIn
     }
+
+    /** Single-quoted JS literal, with everything hostile escaped. */
+    private fun jsString(s: String): String =
+        "'" + s.replace("\\", "\\\\").replace("'", "\\'")
+            .replace("\n", "\\n").replace("\r", "").replace("</", "<\\/") + "'"
 
     // ---------------------------------------------------------------- requests
 
@@ -292,9 +354,6 @@ class ShkoloClient(private val context: Context) {
 
     private fun looksLikeLoginWall(html: String): Boolean =
         html.contains("name=\"password\"") || html.contains("Page Expired")
-
-    private fun sqlString(s: String): String =
-        "'" + s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "") + "'"
 
     /**
      * WebView.evaluateJavascript hands back a JSON-encoded string; unwrap the

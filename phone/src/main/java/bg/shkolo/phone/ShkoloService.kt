@@ -50,7 +50,12 @@ class ShkoloService(private val context: Context) {
         return Reply(if (loggedIn) 200 else Protocol.State.NOT_LOGGED_IN, body.toString())
     }
 
-    private fun login(query: String): Reply {
+    /**
+     * NOTE: this must stay `suspend`. Wrapping the WebView flow in runBlocking
+     * pins the calling thread, and because the WebView itself needs the main
+     * thread to deliver its callbacks, that deadlocks and the UI freezes.
+     */
+    private suspend fun login(query: String): Reply {
         // Credentials are supplied by the watch in the query string as
         // u=...&p=... and are never persisted anywhere.
         val params = parseQuery(query)
@@ -60,7 +65,7 @@ class ShkoloService(private val context: Context) {
             return Reply(400, jsonError("username and password required"))
         }
 
-        val ok = runBlocking { client.login(user, pass) }
+        val ok = client.login(user, pass)
         return if (ok) {
             Reply(200, JSONObject().put("ok", true).toString())
         } else {
